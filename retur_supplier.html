@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Retur Supplier</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+
+    <button onclick="kembaliDashboard()" class="back-btn">
+        ← Dashboard
+    </button>
+
+    <h1>↩️ Retur Supplier</h1>
+
+    <div class="form-box grid-form">
+
+        <div class="input-group">
+            <label>Tanggal</label>
+            <input type="date" id="tanggal">
+        </div>
+
+        <div class="input-group">
+            <label>Supplier</label>
+
+            <input
+                type="text"
+                id="supplier"
+                list="listSupplier">
+
+            <datalist id="listSupplier">
+            </datalist>
+        </div>
+
+        <div class="input-group">
+            <label>Barang</label>
+
+            <input
+                type="text"
+                id="barang"
+                list="listBarang"
+                onchange="ambilInfoBarang()">
+
+            <datalist id="listBarang">
+            </datalist>
+        </div>
+
+        <div class="input-group">
+            <label>Qty Retur</label>
+            <input type="number"
+                   id="qty"
+                   onkeyup="hitungTotal()">
+        </div>
+
+        <div class="input-group">
+            <label>Harga Beli</label>
+            <input type="number"
+                   id="harga_beli"
+                   readonly>
+        </div>
+
+        <div class="input-group">
+            <label>Total</label>
+            <input type="number"
+                   id="total"
+                   readonly>
+        </div>
+
+        <div class="input-group">
+            <label>Keterangan</label>
+            <input type="text"
+                   id="keterangan">
+        </div>
+
+        <button onclick="simpanRetur()"
+                class="menu-btn">
+            Simpan Retur
+        </button>
+
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Tanggal</th>
+                <th>Supplier</th>
+                <th>Barang</th>
+                <th>Qty</th>
+                <th>Harga Beli</th>
+                <th>Total</th>
+                <th>Keterangan</th>
+            </tr>
+        </thead>
+
+        <tbody id="dataRetur">
+
+        </tbody>
+    </table>
+
+</div>
+
+<script src="retur_supplier.js"></script>
+
+</body>
+</html>
+

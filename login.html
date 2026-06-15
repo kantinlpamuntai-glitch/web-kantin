@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Login D'ELBAR</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Segoe UI,sans-serif;
+}
+
+body{
+
+    height:100vh;
+
+    display:flex;
+
+    justify-content:center;
+    align-items:center;
+
+    background:
+    radial-gradient(
+        circle at top,
+        rgba(255,215,0,.15),
+        transparent 40%
+    ),
+    #050505;
+
+    color:white;
+}
+
+.login-box{
+
+    width:400px;
+
+    background:
+    rgba(15,15,15,.95);
+
+    border:1px solid rgba(255,215,0,.3);
+
+    border-radius:25px;
+
+    padding:40px;
+
+    text-align:center;
+
+    box-shadow:
+    0 0 30px rgba(255,215,0,.15);
+}
+
+.logo{
+
+    font-size:50px;
+
+    font-weight:900;
+
+    color:#FFD700;
+}
+
+.owner{
+
+    color:#FFD700;
+
+    letter-spacing:10px;
+
+    margin-bottom:10px;
+}
+
+.sub{
+
+    color:#bdbdbd;
+
+    margin-bottom:30px;
+}
+
+input{
+
+    width:100%;
+
+    padding:14px;
+
+    margin-bottom:15px;
+
+    background:#111;
+
+    border:1px solid #333;
+
+    border-radius:10px;
+
+    color:white;
+
+    font-size:16px;
+}
+
+button{
+
+    width:100%;
+
+    padding:14px;
+
+    border:none;
+
+    border-radius:10px;
+
+    background:#FFD700;
+
+    color:black;
+
+    font-size:16px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+}
+
+button:hover{
+
+    background:#ffea61;
+}
+
+#error{
+
+    color:red;
+
+    margin-top:15px;
+}
+
+</style>
+
+</head>
+<body>
+
+<div class="login-box">
+
+    <div class="logo">D'ELBAR</div>
+
+    <div class="owner">YAHYA</div>
+
+    <div class="sub">Management System</div>
+
+    <input
+        type="text"
+        id="username"
+        placeholder="Username">
+
+    <input
+        type="password"
+        id="password"
+        placeholder="Password">
+
+    <button onclick="login()">
+        LOGIN
+    </button>
+
+    <div id="error"></div>
+
+</div>
+
+<script>
+
+async function login(){
+
+    const username =
+        document.getElementById("username").value;
+
+    const password =
+        document.getElementById("password").value;
+
+    const response =
+        await fetch("/login",{
+
+            method:"POST",
+
+            headers:{
+                "Content-Type":"application/json"
+            },
+
+            body:JSON.stringify({
+
+                username,
+                password
+
+            })
+
+        });
+
+    const hasil =
+        await response.json();
+
+    if(hasil.status==="success"){
+
+        window.location.href="/";
+
+    }
+    else{
+
+        document.getElementById(
+            "error"
+        ).innerHTML =
+        "Username atau Password Salah";
+    }
+
+}
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,648 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Segoe UI, sans-serif;
+}
+
+body{
+    background:#0f0f0f;
+    color:white;
+    padding:20px;
+}
+
+header{
+    text-align:center;
+    margin-bottom:30px;
+}
+
+header h1{
+    color:#FFD700;
+    font-size:42px;
+}
+
+header p{
+    color:#cccccc;
+}
+
+.dashboard-info{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:12px;
+    margin-bottom:25px;
+}
+
+.card{
+    background:linear-gradient(
+        145deg,
+        #1b1b1b,
+        #111111
+    );
+    border:1px solid #FFD700;
+    border-radius:15px;
+    padding:12px;
+    text-align:center;
+    min-height:90px;
+
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+}
+
+.card h3{
+    color:#FFD700;
+    font-size:14px;
+    margin-bottom:8px;
+    font-weight:600;
+}
+
+.card span{
+    font-size:16px;
+    font-weight:bold;
+    color:white;
+}
+
+/* KHUSUS STOK MENIPIS */
+.card.stok-menipis{
+    min-height:170px;
+    justify-content:flex-start;
+    padding-top:15px;
+}
+
+.card.stok-menipis span{
+    font-size:14px;
+    line-height:1.5;
+}
+
+.menu-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:15px;
+}
+
+.menu-btn{
+    background:#1a1a1a;
+    color:white;
+    border:2px solid #FFD700;
+    border-radius:15px;
+    padding:20px;
+    font-size:18px;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.menu-btn:hover{
+    background:#FFD700;
+    color:black;
+    transform:translateY(-5px);
+}
+
+.container{
+    width:95%;
+    margin:auto;
+}
+
+.form-box{
+    background:#1a1a1a;
+    border:1px solid gold;
+    padding:20px;
+    border-radius:15px;
+}
+
+.input-group{
+    margin-bottom:15px;
+}
+
+.input-group label{
+    display:block;
+    margin-bottom:5px;
+    color:gold;
+}
+
+.input-group input{
+    width:100%;
+    padding:10px;
+    border-radius:8px;
+    border:none;
+}
+
+#simpanBtn{
+    width:100%;
+    padding:15px;
+    background:gold;
+    border:none;
+    border-radius:10px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+table th{
+    background:gold;
+    color:black;
+    padding:10px;
+}
+
+table td{
+    border:1px solid #333;
+    padding:10px;
+}
+
+.back-btn{
+    background:gold;
+    border:none;
+    padding:10px 20px;
+    border-radius:10px;
+    cursor:pointer;
+    font-weight:bold;
+    margin-bottom:15px;
+}
+.grid-form{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
+}
+
+#simpanBtn{
+    grid-column:1 / span 2;
+}
+.master-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:20px;
+    margin-top:20px;
+}
+
+.master-btn{
+    background:#1a1a1a;
+    color:white;
+    border:2px solid gold;
+    border-radius:15px;
+    padding:30px;
+    font-size:20px;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.master-btn:hover{
+    background:gold;
+    color:black;
+    transform:translateY(-5px);
+}
+select{
+    width:100%;
+    padding:10px;
+    border-radius:8px;
+    border:none;
+    font-size:16px;
+}
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:20px;
+}
+
+table th{
+    background:#ffd700;
+    color:#000;
+    padding:10px;
+}
+
+table td{
+    border:1px solid #ffd700;
+    padding:10px;
+    color:white;
+}
+
+input{
+    width:300px;
+    padding:10px;
+    margin-top:5px;
+    margin-bottom:10px;
+    background:#111;
+    color:white;
+    border:1px solid #ffd700;
+}
+
+.menu-btn{
+    background:#111;
+    color:white;
+    border:2px solid #ffd700;
+    padding:12px 20px;
+    cursor:pointer;
+    border-radius:10px;
+}
+
+.menu-btn:hover{
+    background:#ffd700;
+    color:black;
+}
+.menu-btn{
+    background:#111;
+    color:white;
+    border:2px solid #ffd700;
+    padding:12px 20px;
+    border-radius:10px;
+    cursor:pointer;
+    font-size:16px;
+    font-weight:bold;
+}
+
+.menu-btn:hover{
+    background:#ffd700;
+    color:black;
+}
+.dashboard-info{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:12px;
+    margin-bottom:25px;
+}
+
+.card{
+    background:linear-gradient(145deg,#1b1b1b,#111111);
+    border:1px solid #FFD700;
+    border-radius:15px;
+    padding:12px;
+    text-align:center;
+    min-height:90px;
+
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+}
+
+.card h3{
+    color:#FFD700;
+    font-size:14px;
+    margin-bottom:8px;
+    font-weight:600;
+}
+
+.card span{
+    font-size:16px;
+    font-weight:bold;
+    color:white;
+}
+
+.card.stok-menipis{
+    min-height:170px;
+    justify-content:flex-start;
+    padding-top:15px;
+}
+
+#daftarStokMenipis{
+    margin-top:8px;
+    font-size:12px;
+    line-height:1.5;
+    color:#cccccc;
+}
+.dashboard-info{
+    display:grid;
+    grid-template-columns:repeat(12,1fr);
+    gap:12px;
+    margin-bottom:25px;
+}
+
+/* BARIS 1 */
+.dashboard-info .card:nth-child(1),
+.dashboard-info .card:nth-child(2),
+.dashboard-info .card:nth-child(3),
+.dashboard-info .card:nth-child(4){
+    grid-column:span 3;
+}
+
+/* BARIS 2 */
+.card-besar{
+    grid-column:span 4;
+}
+
+/* BARIS 3 */
+.stok-menipis{
+    grid-column:1 / -1;
+
+    min-height:220px;
+
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-start;
+    align-items:flex-start;
+
+    padding:15px;
+}
+
+.stok-menipis{
+    grid-column:1 / -1;
+
+    min-height:220px;
+
+    display:flex;
+    flex-direction:column;
+
+    justify-content:flex-start;
+    align-items:center;
+
+    padding:15px;
+}
+
+.stok-menipis{
+    grid-column:1 / span 6;
+
+    min-height:180px;
+
+    display:flex;
+    flex-direction:column;
+
+    justify-content:flex-start;
+
+    padding:15px;
+
+    align-items:flex-start;
+}
+
+.stok-menipis h3{
+    width:100%;
+    text-align:center;
+
+    color:#FFD700;
+    font-size:18px;
+
+    margin-bottom:8px;
+}
+
+.stok-menipis span{
+    width:100%;
+    text-align:center;
+
+    margin-bottom:10px;
+
+    font-size:16px;
+    font-weight:bold;
+
+    color:white;
+}
+
+#daftarStokMenipis{
+    list-style:none;
+
+    width:100%;
+
+    padding-left:20px;
+
+    margin-top:5px;
+
+    text-align:left;
+}
+
+#daftarStokMenipis li{
+    margin-bottom:4px;
+
+    font-size:12px;
+    font-weight:400;
+
+    color:#dcdcdc;
+
+    text-align:left;
+}
+
+
+/* KOTAK KECIL */
+.card{
+    min-height:75px;
+}
+
+.card h3{
+    font-size:14px;
+}
+
+.card span{
+    font-size:18px;
+}
+/* =========================
+   PREMIUM BACKGROUND
+========================= */
+
+body{
+
+    background:
+    radial-gradient(
+        circle at top center,
+        rgba(255,215,0,0.08),
+        transparent 35%
+    ),
+    linear-gradient(
+        180deg,
+        #0b0b0b 0%,
+        #050505 100%
+    );
+
+    color:white;
+    padding:20px;
+
+    min-height:100vh;
+
+    overflow-x:hidden;
+}
+
+/* Glow atas */
+
+body::before{
+
+    content:"";
+
+    position:fixed;
+
+    top:-250px;
+    left:50%;
+
+    transform:translateX(-50%);
+
+    width:900px;
+    height:500px;
+
+    background:
+    radial-gradient(
+        circle,
+        rgba(255,215,0,0.15),
+        transparent 70%
+    );
+
+    pointer-events:none;
+
+    z-index:-2;
+}
+
+/* WATERMARK D'ELBAR */
+
+body::after{
+
+    content:"D'ELBAR";
+
+    position:fixed;
+
+    right:80px;
+    bottom:30px;
+
+    font-size:180px;
+
+    font-weight:900;
+
+    letter-spacing:8px;
+
+    color:rgba(255,215,0,0.02);
+
+    pointer-events:none;
+
+    user-select:none;
+
+    z-index:-2;
+}
+
+/* =========================
+   HEADER
+========================= */
+
+header h1{
+
+    color:#FFD700;
+
+    font-size:52px;
+
+    font-weight:800;
+
+    letter-spacing:2px;
+
+    text-shadow:
+        0 0 20px rgba(255,215,0,0.25);
+}
+
+/* YAHYA */
+
+.owner-name{
+
+    color:#FFD700;
+
+    font-size:20px;
+
+    letter-spacing:10px;
+
+    margin-top:-5px;
+
+    margin-bottom:8px;
+
+    opacity:0.85;
+}
+
+/* =========================
+   CARD PREMIUM
+========================= */
+
+.card{
+
+    background:
+    rgba(15,15,15,0.75);
+
+    backdrop-filter:blur(8px);
+
+    border:1px solid
+    rgba(255,215,0,0.45);
+
+    border-radius:15px;
+
+    box-shadow:
+        0 0 15px rgba(255,215,0,0.08);
+
+    transition:.3s;
+}
+
+.card:hover{
+
+    transform:translateY(-3px);
+
+    box-shadow:
+        0 0 25px rgba(255,215,0,0.20);
+}
+
+/* =========================
+   MENU BUTTON
+========================= */
+
+.menu-btn{
+
+    background:
+    rgba(15,15,15,0.75);
+
+    backdrop-filter:blur(6px);
+
+    color:white;
+
+    border:1px solid #FFD700;
+
+    border-radius:14px;
+
+    font-weight:600;
+
+    transition:.3s;
+
+    box-shadow:
+        0 0 10px rgba(255,215,0,0.08);
+}
+
+.menu-btn:hover{
+
+    background:
+    rgba(255,215,0,0.12);
+
+    color:#FFD700;
+
+    transform:translateY(-4px);
+
+    box-shadow:
+        0 0 30px rgba(255,215,0,0.25);
+}
+
+/* =========================
+   STOK MENIPIS
+========================= */
+
+.stok-menipis{
+
+    background:
+    rgba(15,15,15,0.82);
+}
+
+#daftarStokMenipis li{
+
+    color:#d8d8d8;
+
+    margin-bottom:5px;
+}
+.logout-btn{
+
+    background:#FFD700;
+
+    color:black;
+
+    border:none;
+
+    padding:8px 18px;
+
+    border-radius:10px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    margin-bottom:10px;
+}
+
+.logout-btn:hover{
+
+    background:#ffea61;
+}

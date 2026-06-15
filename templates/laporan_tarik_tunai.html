@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>D'ELBAR - Laporan Tarik Tunai</title>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    background:#111;
+    color:#FFD700;
+    font-family:Arial,sans-serif;
+}
+
+.container{
+    width:95%;
+    margin:auto;
+    padding:20px;
+}
+
+.back-btn{
+    background:#FFD700;
+    color:#000;
+    border:none;
+    padding:12px 20px;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:bold;
+    margin-bottom:20px;
+}
+
+h1{
+    margin-bottom:20px;
+}
+
+.filter-box{
+    background:#1c1c1c;
+    border:1px solid #FFD700;
+    border-radius:10px;
+    padding:15px;
+    margin-bottom:20px;
+}
+
+#tanggal{
+    padding:10px;
+    border:1px solid #FFD700;
+    border-radius:5px;
+    background:#000;
+    color:#FFD700;
+}
+
+.btn-tampilkan{
+    background:#FFD700;
+    color:#000;
+    border:none;
+    padding:10px 20px;
+    border-radius:5px;
+    cursor:pointer;
+    font-weight:bold;
+    margin-left:10px;
+}
+
+.table-container{
+    overflow-x:auto;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    background:#1c1c1c;
+}
+
+th{
+    background:#FFD700;
+    color:#000;
+    padding:12px;
+}
+
+td{
+    border:1px solid #333;
+    padding:10px;
+    text-align:center;
+    color:white;
+}
+
+tr:nth-child(even){
+    background:#181818;
+}
+
+</style>
+
+</head>
+<body>
+
+<div class="container">
+
+<button
+class="back-btn"
+onclick="location.href='/'">
+🏠 Dashboard
+</button>
+
+<h1>📄 LAPORAN TARIK TUNAI</h1>
+
+<div class="filter-box">
+
+<label>📅 Pilih Tanggal :</label>
+
+<input
+type="text"
+id="tanggal">
+
+<button
+class="btn-tampilkan"
+onclick="tampilkanData()">
+Tampilkan
+</button>
+
+</div>
+
+<div class="table-container">
+
+<table>
+
+<thead>
+<tr>
+<th>Tanggal</th>
+<th>Bank</th>
+<th>Nominal</th>
+<th>Admin</th>
+<th>Uang Diserahkan</th>
+<th>✔</th>
+<th>Waktu</th>
+</tr>
+</thead>
+
+<tbody id="bodyTarikTunai">
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+<script>
+
+flatpickr("#tanggal",{
+    dateFormat:"Y-m-d",
+    defaultDate:"today"
+});
+
+async function tampilkanData(){
+
+    try{
+
+        let tanggal =
+            document.getElementById("tanggal").value;
+
+        let response =
+            await fetch(
+                `/data_laporan_tarik_tunai?tanggal=${tanggal}`
+            );
+
+        let data =
+            await response.json();
+
+        let tbody =
+            document.getElementById(
+                "bodyTarikTunai"
+            );
+
+        tbody.innerHTML = "";
+
+        data.forEach(item => {
+
+            tbody.innerHTML += `
+            <tr>
+
+                <td>${item.tanggal}</td>
+
+                <td>${item.bank}</td>
+
+                <td>
+                    Rp ${item.nominal.toLocaleString("id-ID")}
+                </td>
+
+                <td>
+                    Rp ${item.admin.toLocaleString("id-ID")}
+                </td>
+
+                <td>
+                    Rp ${item.uang_diserahkan.toLocaleString("id-ID")}
+                </td>
+
+                <td>
+                    <input
+                    type="checkbox"
+                    ${item.sudah_diproses ? "checked" : ""}
+                    onchange="simpanChecklist(this, ${item.id})">
+                </td>
+
+                <td>
+                    ${item.waktu_proses || ""}
+                </td>
+
+            </tr>
+            `;
+
+        });
+
+    }
+    catch(error){
+
+        console.error(error);
+        alert("Gagal mengambil data");
+
+    }
+
+}
+
+async function simpanChecklist(checkbox,id){
+
+    let kolomWaktu =
+        checkbox.parentElement.nextElementSibling;
+
+    if(checkbox.checked){
+
+        let sekarang = new Date();
+
+        let jam =
+            sekarang.toLocaleTimeString("id-ID");
+
+        kolomWaktu.innerHTML = jam;
+
+    }
+    else{
+
+        kolomWaktu.innerHTML = "";
+
+    }
+
+    try{
+
+        await fetch("/update_tarik_tunai",{
+            method:"POST",
+            headers:{
+                "Content-Type":"application/json"
+            },
+            body:JSON.stringify({
+                id:id,
+                status:checkbox.checked
+            })
+        });
+
+    }
+    catch(error){
+
+        console.error(error);
+        alert("Gagal menyimpan checklist");
+
+    }
+
+}
+
+tampilkanData();
+
+</script>
+
+</body>
+</html>

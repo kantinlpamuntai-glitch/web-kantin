@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Pencarian Data</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+
+    <button class="back-btn"
+    onclick="location.href='index.html'">
+        ← Dashboard
+    </button>
+
+    <h1>Pencarian Data</h1>
+
+    <input
+        type="text"
+        id="keyword"
+        placeholder="Cari barang, supplier atau tanggal">
+
+    <button id="cariBtn">
+        Cari
+    </button>
+
+    <br><br>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Sumber</th>
+                <th>Keterangan</th>
+            </tr>
+        </thead>
+
+        <tbody id="hasilPencarian">
+
+        </tbody>
+    </table>
+
+</div>
+
+<script src="pencarian.js"></script>
+
+</body>
+</html>

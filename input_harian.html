@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Input Harian</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+
+    <button onclick="location.href='index.html'" class="back-btn">
+        ← Dashboard
+    </button>
+
+    <h1>🛒 Input Harian</h1>
+
+    <div class="form-box grid-form">
+
+        <div class="input-group">
+            <label>Tanggal</label>
+            <input type="date" id="tanggal">
+        </div>
+
+        <div class="input-group">
+            <label>Barang</label>
+            <select id="barang"></select>
+        </div>
+
+        <div class="input-group">
+            <label>Stok Awal</label>
+            <input type="number" id="stokAwal" readonly>
+        </div>
+
+        <div class="input-group">
+            <label>Sisa</label>
+            <input type="number" id="sisa" value="0">
+        </div>
+
+        <div class="input-group">
+            <label>Pengembalian</label>
+            <input type="number" id="pengembalian" value="0">
+        </div>
+
+        <div class="input-group">
+            <label>Terjual</label>
+            <input type="number" id="terjual" readonly>
+        </div>
+
+        <div class="input-group">
+            <label>Harga Jual</label>
+            <input type="number" id="hargaJual" readonly>
+        </div>
+
+        <div class="input-group">
+            <label>Omzet</label>
+            <input type="number" id="omzet" readonly>
+        </div>
+
+        <div class="input-group">
+            <label>Laba</label>
+            <input type="number" id="laba" readonly>
+        </div>
+
+        <button id="simpanBtn">
+            💾 Simpan Transaksi
+        </button>
+
+    </div>
+
+    <br>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Tanggal</th>
+                <th>Barang</th>
+                <th>Stok Awal</th>
+                <th>Sisa</th>
+                <th>Pengembalian</th>
+                <th>Terjual</th>
+                <th>Omzet</th>
+                <th>Laba</th>
+            </tr>
+        </thead>
+
+        <tbody id="dataTransaksi">
+
+        </tbody>
+
+    </table>
+
+</div>
+
+<script src="input_harian.js"></script>
+
+</body>
+</html>

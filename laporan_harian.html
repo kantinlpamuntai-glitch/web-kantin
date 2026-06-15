@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laporan Harian</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+
+    <button onclick="location.href='index.html'" class="back-btn">
+        ← Dashboard
+    </button>
+
+    <h1>📊 Laporan Harian</h1>
+
+    <div class="form-box">
+
+        <div class="input-group">
+            <label>Pilih Tanggal</label>
+            <input type="date" id="tanggal">
+        </div>
+
+        <button onclick="loadLaporan()">
+            Tampilkan Laporan
+        </button>
+
+    </div>
+
+    <br>
+
+    <table>
+
+        <thead>
+           <tr>
+    <th>Barang</th>
+    <th>Stok Awal</th>
+    <th>Pengembalian</th>
+    <th>Terjual</th>
+    <th>Stok Akhir</th>
+    <th>Omzet</th>
+    <th>Modal</th>
+    <th>Laba</th>
+</tr>
+        </thead>
+
+        <tbody id="dataLaporan">
+
+        </tbody>
+
+        <tfoot>
+<tr>
+    <th>TOTAL</th>
+    <th></th>
+    <th></th>
+    <th></th>
+    <th></th>
+    <th id="totalOmzet">Rp 0</th>
+    <th id="totalModal">Rp 0</th>
+    <th id="totalLaba">Rp 0</th>
+</tr>
+</tfoot>
+
+    </table>
+
+</div>
+
+<script src="laporan_harian.js"></script>
+
+</body>
+</html>

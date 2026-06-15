@@ -1,0 +1,140 @@
+body{
+    background:linear-gradient(180deg,#050505,#101010);
+    color:white;
+}
+
+header{
+    text-align:center;
+    margin-bottom:30px;
+}
+
+header h1{
+    font-size:72px;
+    color:#FFD700;
+    letter-spacing:4px;
+}
+
+.owner-name{
+    color:#FFD700;
+    font-size:22px;
+    letter-spacing:10px;
+}
+
+header p{
+    color:#cccccc;
+    letter-spacing:4px;
+}
+
+.dashboard-info{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:15px;
+    margin-bottom:20px;
+}
+
+.card{
+    background:#111;
+    border:1px solid rgba(255,215,0,.4);
+    border-radius:18px;
+    padding:15px;
+    text-align:center;
+}
+
+.card h3{
+    color:#FFD700;
+    margin-bottom:10px;
+    font-size:15px;
+}
+
+.card span{
+    font-size:18px;
+    font-weight:bold;
+    color:white;
+}
+
+.card-besar{
+    grid-column:span 1;
+}
+
+.stok-menipis{
+    grid-column:1 / -1;
+    min-height:120px;
+}
+
+#stokMenipis{
+    display:block;
+    margin:10px 0;
+    font-size:18px;
+    font-weight:bold;
+}
+
+#daftarStokMenipis{
+    list-style:none;
+    columns:3;
+    padding-left:20px;
+}
+
+#daftarStokMenipis li{
+    margin-bottom:5px;
+}
+
+.menu-grid{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:12px;
+}
+
+.menu-btn{
+    background:#111;
+    color:white;
+    border:1px solid rgba(255,215,0,.5);
+    border-radius:12px;
+    padding:14px;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.menu-btn:hover{
+    color:#FFD700;
+    transform:translateY(-2px);
+}
+
+.footer-premium{
+    margin-top:25px;
+    text-align:center;
+}
+
+.footer-line{
+    width:80%;
+    height:1px;
+    background:rgba(255,215,0,.3);
+    margin:auto;
+    margin-bottom:10px;
+}
+
+.footer-text{
+    color:#FFD700;
+    letter-spacing:3px;
+}
+
+.footer-owner{
+    color:#888;
+    margin-top:8px;
+}
+
+.header-right{
+    position:absolute;
+    right:30px;
+    top:40px;
+    color:#FFD700;
+    text-align:right;
+}
+
+#jamRealtime{
+    font-size:24px;
+    font-weight:bold;
+}
+
+#tanggalRealtime{
+    font-size:14px;
+}

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Input Operasional</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <button class="menu-btn"
+        onclick="kembaliDashboard()">
+    ← Dashboard
+    </button>
+
+    <br><br>
+
+    <h2>INPUT OPERASIONAL</h2>
+
+    <label>Tanggal</label><br>
+    <input type="date" id="tanggal"><br><br>
+
+    <label>Kategori</label><br>
+    <input type="text" id="kategori"><br><br>
+
+    <label>Keterangan</label><br>
+    <input type="text" id="keterangan"><br><br>
+
+    <label>Jumlah</label><br>
+    <input type="number" id="jumlah"><br><br>
+
+    <button class="menu-btn"
+        onclick="simpanOperasional()">
+    💾 SIMPAN
+    </button>
+
+    <hr>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Tanggal</th>
+                <th>Kategori</th>
+                <th>Keterangan</th>
+                <th>Jumlah</th>
+            </tr>
+        </thead>
+
+        <tbody id="dataOperasional">
+        </tbody>
+    </table>
+
+    <script src="operasional.js"></script>
+
+</body>
+</html>
+

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pembelian - D'ELBAR</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+
+    <button onclick="location.href='index.html'" class="back-btn">
+        ← Dashboard
+    </button>
+
+    <h1>Pembelian Barang</h1>
+
+    <div class="form-box grid-form">
+
+        <div class="input-group">
+            <label>Tanggal</label>
+            <input type="date" id="tanggal">
+        </div>
+
+        <div class="input-group">
+    <label>Supplier</label>
+    <select id="supplier"></select>
+</div>
+
+        <div class="input-group">
+    <label>Nama Barang</label>
+    <select id="barang"></select>
+</div>
+
+        <div class="input-group">
+            <label>Qty</label>
+            <input type="number" id="qty">
+        </div>
+
+       <div class="input-group">
+    <label>Harga Beli</label>
+    <input type="number" id="harga">
+</div>
+
+<div class="input-group">
+    <label>Status Pembelian</label>
+    <select id="status">
+        <option value="LUNAS">LUNAS</option>
+        <option value="HUTANG">HUTANG</option>
+    </select>
+</div>
+
+<div class="input-group">
+    <label>Total</label>
+    <input type="number" id="total" readonly>
+</div>
+
+        <button id="simpanBtn">Simpan Pembelian</button>
+
+    </div>
+
+    <br>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Tanggal</th>
+                <th>Supplier</th>
+                <th>Barang</th>
+                <th>Qty</th>
+                <th>Harga</th>
+<th>Status</th>
+<th>Total</th>
+            </tr>
+        </thead>
+
+        <tbody id="dataPembelian">
+        </tbody>
+
+    </table>
+
+</div>
+
+<script src="pembelian.js"></script>
+
+</body>
+</html>

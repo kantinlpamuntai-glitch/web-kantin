@@ -1,0 +1,61 @@
+D'ELBAR
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laporan Hutang Supplier</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+
+    <button
+        onclick="location.href='index.html'"
+        class="back-btn">
+        ← Dashboard
+    </button>
+
+    <h1>💳 Laporan Hutang Supplier</h1>
+
+    <table>
+
+        <thead>
+            <tr>
+                <th>Tanggal</th>
+                <th>Supplier</th>
+                <th>Barang</th>
+                <th>Total Hutang</th>
+                <th>Sudah Dibayar</th>
+                <th>Retur</th>
+                <th>Sisa Hutang</th>
+            </tr>
+        </thead>
+
+        <tbody id="dataHutang">
+
+        </tbody>
+
+        <tfoot>
+            <tr>
+                <th colspan="6">
+                    TOTAL SISA HUTANG
+                </th>
+
+                <th id="totalHutang">
+                    Rp 0
+                </th>
+            </tr>
+        </tfoot>
+
+    </table>
+
+</div>
+
+<script src="laporan_hutang.js"></script>
+
+</body>
+</html>
+D'ELBAR

@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+
+<html lang="id">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>D'ELBAR Management System</title>
+
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="dashboard.css">
+
+</head>
+
+<body>
+
+<header class="premium-header">
+
+
+<div class="header-left">
+
+    <div class="status-online">
+        🟢 ONLINE
+    </div>
+
+</div>
+
+<div class="header-center">
+
+    <h1>D'ELBAR</h1>
+
+    <div class="owner-name">
+        YAHYA
+    </div>
+
+    <p>
+        MANAGEMENT SYSTEM
+    </p>
+
+</div>
+</div>
+
+<div class="header-right">
+
+    <button class="logout-btn"
+    onclick="logout()">
+        🚪 Logout
+    </button>
+
+    <div id="tanggalRealtime">
+        14 Juni 2026
+    </div>
+
+    <div id="jamRealtime">
+        00:00:00
+    </div>
+
+</div>
+
+</div>
+
+</div>
+
+
+</header>
+
+<div class="dashboard-info">
+
+
+<div class="premium-card">
+
+    <div class="icon-box">📈</div>
+
+    <h3>OMZET HARI INI</h3>
+
+    <span id="omzet">
+        Rp 0
+    </span>
+
+</div>
+
+<div class="premium-card">
+
+    <div class="icon-box">💰</div>
+
+    <h3>LABA HARI INI</h3>
+
+    <span id="laba">
+        Rp 0
+    </span>
+
+</div>
+
+<div class="premium-card">
+
+    <div class="icon-box">👛</div>
+
+    <h3>SALDO KAS</h3>
+
+    <span id="saldoKas">
+        Rp 0
+    </span>
+
+</div>
+
+<div class="premium-card">
+
+    <div class="icon-box">🤝</div>
+
+    <h3>HUTANG SUPPLIER</h3>
+
+    <span id="hutangSupplier">
+        Rp 0
+    </span>
+
+</div>
+
+<div class="card-besar">
+
+    <h3>🪙 TOTAL ASET KOTOR</h3>
+
+    <span id="asetKotor">
+        Rp 0
+    </span>
+
+</div>
+
+<div class="card-besar">
+
+    <h3>🏆 TOTAL ASET BERSIH</h3>
+
+    <span id="asetBersih">
+        Rp 0
+    </span>
+
+</div>
+
+<div class="card-besar">
+
+    <h3>📦 NILAI PERSEDIAAN</h3>
+
+    <span id="persediaan">
+        Rp 0
+    </span>
+
+</div>
+
+<div class="stok-menipis">
+
+    <h3>⚠ STOK MENIPIS</h3>
+
+    <span id="stokMenipis">
+        0 Barang
+    </span>
+
+    <ul id="daftarStokMenipis"></ul>
+
+</div>
+
+
+</div>
+
+<div class="menu-grid">
+<button class="menu-btn" onclick="location.href='pembelian.html'">
+📦 Pembelian
+</button>
+
+<button class="menu-btn" onclick="location.href='input_harian.html'">
+🛒 Input Harian
+</button>
+
+<button class="menu-btn" onclick="location.href='laporan_harian.html'">
+📊 Laporan Harian
+</button>
+
+<button class="menu-btn" onclick="location.href='stok.html'">
+🏪 Stok Gudang
+</button>
+
+<button class="menu-btn" onclick="location.href='laporan_hutang.html'">
+💳 Laporan Hutang
+</button>
+
+<button class="menu-btn" onclick="location.href='pembayaran_supplier.html'">
+💰 Pembayaran Supplier
+</button>
+
+<button class="menu-btn" onclick="bukaOperasional()">
+🧾 Operasional
+</button>
+
+<button class="menu-btn" onclick="location.href='retur_supplier.html'">
+↩️ Retur Supplier
+</button>
+
+<button class="menu-btn" onclick="window.open('/login_qlola', '_blank')">
+🏦 Login QLola
+</button>
+
+<button class="menu-btn" onclick="jalankanAutoMutasi()">
+🔄 Auto Mutasi
+</button>
+
+<button class="menu-btn" onclick="location.href='/laporan_mutasi_brilink'">
+🏦 Laporan Mutasi BRILink
+</button>
+
+<button class="menu-btn" onclick="location.href='/laporan_tarik_tunai'">
+📄 Laporan Tarik Tunai
+</button>
+
+<button class="menu-btn" onclick="location.href='master.html'">
+⚙️ Master Data
+</button>
+
+<button class="menu-btn" onclick="location.href='pencarian.html'">
+🔍 Pencarian Data
+</button>
+
+<button class="menu-btn" onclick="bukaWhatsapp()">
+📱 WhatsApp
+</button>
+
+</div>
+
+<footer class="footer-premium">
+
+<div class="footer-line"></div>
+
+<div class="footer-text">
+TRANSPARAN • AKUNTABEL • PROFESIONAL
+</div>
+
+<div class="footer-owner">
+D'ELBAR YAHYA
+</div>
+
+</footer>
+
+<script>
+
+function updateWaktu(){
+
+    const sekarang = new Date();
+
+    const tanggal =
+        sekarang.toLocaleDateString(
+            "id-ID",
+            {
+                day:"2-digit",
+                month:"long",
+                year:"numeric"
+            }
+        );
+
+    const jam =
+        sekarang.toLocaleTimeString(
+            "id-ID"
+        );
+
+    document.getElementById(
+        "tanggalRealtime"
+    ).innerHTML = tanggal;
+
+    document.getElementById(
+        "jamRealtime"
+    ).innerHTML = jam;
+
+}
+
+setInterval(updateWaktu,1000);
+
+updateWaktu();
+
+</script>
+
+<script src="script.js"></script>
+
+</body>
+</html>

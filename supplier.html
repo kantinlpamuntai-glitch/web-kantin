@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Master Supplier</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+
+    <button onclick="location.href='master.html'" class="back-btn">
+        ← Master Data
+    </button>
+
+    <h1>🏢 Master Supplier</h1>
+
+    <div class="form-box grid-form">
+
+        <div class="input-group">
+            <label>Nama Supplier</label>
+            <input type="text" id="namaSupplier">
+        </div>
+
+        <div class="input-group">
+            <label>No HP</label>
+            <input type="text" id="noHp">
+        </div>
+
+        <div class="input-group">
+            <label>Alamat</label>
+            <input type="text" id="alamat">
+        </div>
+
+        <button id="simpanSupplier">
+            Simpan Supplier
+        </button>
+
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Nama Supplier</th>
+                <th>No HP</th>
+                <th>Alamat</th>
+            </tr>
+        </thead>
+
+        <tbody id="tabelSupplier">
+
+        </tbody>
+    </table>
+
+</div>
+
+<script src="supplier.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,785 @@
+from flask import Flask, request, jsonify
+from flask_cors import CORS
+import psycopg2
+
+app = Flask(__name__)
+CORS(app)
+
+conn = psycopg2.connect(
+    host="localhost",
+    database="delbar",
+    user="postgres",
+    password="yahyabarus43"
+)
+
+# =========================
+# MASTER BARANG
+# =========================
+
+@app.route("/barang", methods=["GET"])
+def get_barang():
+    cur = conn.cursor()
+    cur.execute("""
+        SELECT kode,nama,harga_beli,harga_jual,stok
+        FROM barang
+        ORDER BY nama
+    """)
+    rows = cur.fetchall()
+    cur.close()
+
+    data = []
+    for row in rows:
+        data.append({
+            "kode": row[0],
+            "nama": row[1],
+            "harga_beli": float(row[2]),
+            "harga_jual": float(row[3]),
+            "stok": int(row[4])
+        })
+
+    return jsonify(data)
+
+@app.route("/simpan_barang", methods=["POST"])
+def simpan_barang():
+    data = request.get_json()
+
+    cur = conn.cursor()
+    cur.execute("""
+        INSERT INTO barang
+        (kode,nama,harga_beli,harga_jual,stok)
+        VALUES (%s,%s,%s,%s,%s)
+    """, (
+        data["kode"],
+        data["nama"],
+        data["hargaBeli"],
+        data["hargaJual"],
+        data["stok"]
+    ))
+    conn.commit()
+    cur.close()
+
+    return jsonify({"message":"Barang berhasil disimpan"})
+
+# =========================
+# MASTER SUPPLIER
+# =========================
+
+@app.route("/supplier", methods=["GET"])
+def get_supplier():
+    cur = conn.cursor()
+    cur.execute("""
+        SELECT nama,hp,alamat
+        FROM supplier
+        ORDER BY nama
+    """)
+    rows = cur.fetchall()
+    cur.close()
+
+    data = []
+    for row in rows:
+        data.append({
+            "nama": row[0],
+            "hp": row[1],
+            "alamat": row[2]
+        })
+
+    return jsonify(data)
+
+@app.route("/simpan_supplier", methods=["POST"])
+def simpan_supplier():
+    data = request.get_json()
+
+    cur = conn.cursor()
+    cur.execute("""
+        INSERT INTO supplier
+        (nama,hp,alamat)
+        VALUES (%s,%s,%s)
+    """, (
+        data["nama"],
+        data["hp"],
+        data["alamat"]
+    ))
+    conn.commit()
+    cur.close()
+
+    return jsonify({"message":"Supplier berhasil disimpan"})
+
+# =========================
+# PEMBELIAN
+# =========================
+
+@app.route("/simpan_pembelian", methods=["POST"])
+def simpan_pembelian():
+
+    data = request.get_json()
+
+    cur = conn.cursor()
+
+    # CEK DUPLIKAT
+    cur.execute("""
+        SELECT COUNT(*)
+        FROM pembelian
+        WHERE tanggal=%s
+        AND supplier=%s
+        AND barang=%s
+        AND qty=%s
+        AND total=%s
+    """, (
+        data["tanggal"],
+        data["supplier"],
+        data["barang"],
+        data["qty"],
+        data["total"]
+    ))
+
+    cek = cur.fetchone()[0]
+
+    if cek > 0:
+        cur.close()
+
+        return jsonify({
+            "message":"Pembelian sudah pernah diinput"
+        })
+
+    # Simpan pembelian
+    cur.execute("""
+        INSERT INTO pembelian
+        (tanggal,supplier,barang,qty,harga,status,total)
+        VALUES (%s,%s,%s,%s,%s,%s,%s)
+    """, (
+        data["tanggal"],
+        data["supplier"],
+        data["barang"],
+        data["qty"],
+        data["harga"],
+        data["status"],
+        data["total"]
+    ))
+
+    # Tambah stok barang
+    cur.execute("""
+        UPDATE barang
+        SET stok = stok + %s
+        WHERE nama = %s
+    """, (
+        data["qty"],
+        data["barang"]
+    ))
+
+    # Jika pembelian lunas otomatis kurangi kas
+    if data["status"] == "LUNAS":
+
+        cur.execute("""
+            INSERT INTO kas
+            (tanggal,keterangan,masuk,keluar)
+            VALUES (%s,%s,%s,%s)
+        """, (
+            data["tanggal"],
+            "PEMBELIAN BARANG",
+            0,
+            data["total"]
+        ))
+
+    conn.commit()
+    cur.close()
+
+    return jsonify({
+        "message":"Pembelian berhasil disimpan"
+    })
+# =========================
+# DATA PEMBELIAN
+# =========================
+
+@app.route("/pembelian", methods=["GET"])
+def get_pembelian():
+
+    cur = conn.cursor()
+
+    cur.execute("""
+        SELECT
+            tanggal,
+            supplier,
+            barang,
+            qty,
+            harga,
+            status,
+            total
+        FROM pembelian
+        ORDER BY tanggal DESC
+    """)
+
+    rows = cur.fetchall()
+
+    cur.close()
+
+    data = []
+
+    for row in rows:
+        data.append({
+            "tanggal": str(row[0]),
+            "supplier": row[1],
+            "barang": row[2],
+            "qty": row[3],
+            "harga": float(row[4]),
+            "status": row[5],
+            "total": float(row[6])
+        })
+
+    return jsonify(data)
+
+# =========================
+# INPUT HARIAN
+# =========================
+
+@app.route("/input_harian", methods=["GET"])
+def get_input_harian():
+    cur = conn.cursor()
+    cur.execute("""
+        SELECT tanggal,barang,stok_awal,sisa_stok,
+               pengembalian,terjual,omzet,laba
+        FROM input_harian
+        ORDER BY tanggal DESC
+    """)
+
+    rows = cur.fetchall()
+    cur.close()
+
+    data = []
+    for row in rows:
+        data.append({
+            "tanggal": str(row[0]),
+            "barang": row[1],
+            "stok_awal": row[2],
+            "sisa_stok": row[3],
+            "pengembalian": row[4],
+            "terjual": row[5],
+            "omzet": float(row[6]),
+            "laba": float(row[7])
+        })
+
+    return jsonify(data)
+
+@app.route("/simpan_input_harian", methods=["POST"])
+def simpan_input_harian():
+
+    data = request.get_json()
+
+    cur = conn.cursor()
+
+    # CEK DUPLIKAT
+    cur.execute("""
+        SELECT COUNT(*)
+        FROM input_harian
+        WHERE tanggal=%s
+        AND barang=%s
+    """, (
+        data["tanggal"],
+        data["barang"]
+    ))
+
+    cek = cur.fetchone()[0]
+
+    if cek > 0:
+        cur.close()
+
+        return jsonify({
+            "message":"Input harian barang ini sudah pernah disimpan"
+        })
+
+    # CEK STOK MINUS
+    if int(data["sisa_stok"]) < 0:
+
+        cur.close()
+
+        return jsonify({
+            "message":"Stok tidak boleh minus"
+        })
+
+    # SIMPAN INPUT HARIAN
+    cur.execute("""
+        INSERT INTO input_harian
+        (tanggal,barang,stok_awal,tambahan,sisa_stok,
+        pengembalian,terjual,harga_beli,harga_jual,
+        omzet,modal,laba)
+        VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+    """, (
+        data["tanggal"],
+        data["barang"],
+        data["stok_awal"],
+        data["tambahan"],
+        data["sisa_stok"],
+        data["pengembalian"],
+        data["terjual"],
+        data["harga_beli"],
+        data["harga_jual"],
+        data["omzet"],
+        data["modal"],
+        data["laba"]
+    ))
+
+    # UPDATE STOK
+    cur.execute("""
+        UPDATE barang
+        SET stok=%s
+        WHERE nama=%s
+    """, (
+        data["sisa_stok"],
+        data["barang"]
+    ))
+
+    conn.commit()
+    cur.close()
+
+    return jsonify({
+        "message":"Input harian berhasil disimpan"
+    })
+
+# =========================
+# LAPORAN HARIAN
+# =========================
+
+@app.route("/laporan_harian", methods=["GET"])
+def laporan_harian():
+    tanggal = request.args.get("tanggal")
+
+    cur = conn.cursor()
+
+    cur.execute("""
+        SELECT barang,stok_awal,pengembalian,
+               terjual,sisa_stok,omzet,modal,laba
+        FROM input_harian
+        WHERE tanggal=%s
+    """, (tanggal,))
+
+    rows = cur.fetchall()
+    cur.close()
+
+    data = []
+
+    for row in rows:
+        data.append({
+            "barang": row[0],
+            "stok_awal": row[1],
+            "pengembalian": row[2],
+            "terjual": row[3],
+            "sisa_stok": row[4],
+            "omzet": float(row[5]),
+            "modal": float(row[6]),
+            "laba": float(row[7])
+        })
+
+    return jsonify(data)
+
+# =========================
+# LAPORAN HUTANG
+# =========================
+
+@app.route("/laporan_hutang", methods=["GET"])
+def laporan_hutang():
+
+    cur = conn.cursor()
+
+    cur.execute("""
+        SELECT
+            tanggal,
+            supplier,
+            barang,
+            total,
+            sudah_dibayar,
+            (total - sudah_dibayar) as sisa_hutang
+        FROM pembelian
+        WHERE status='HUTANG'
+        AND (total - sudah_dibayar) > 0
+    """)
+
+    rows = cur.fetchall()
+
+    cur.close()
+
+    data = []
+
+    for row in rows:
+        data.append({
+            "tanggal": str(row[0]),
+            "supplier": row[1],
+            "barang": row[2],
+            "total": float(row[3]),
+            "sudah_dibayar": float(row[4]),
+            "sisa_hutang": float(row[5])
+        })
+
+    return jsonify(data)
+# =========================
+# PEMBAYARAN SUPPLIER
+# =========================
+
+# =========================
+# PEMBAYARAN SUPPLIER
+# =========================
+
+@app.route("/pembayaran_supplier", methods=["GET"])
+def get_pembayaran_supplier():
+
+    cur = conn.cursor()
+
+    cur.execute("""
+        SELECT
+            tanggal,
+            supplier,
+            nominal,
+            keterangan
+        FROM pembayaran_supplier
+        ORDER BY id DESC
+    """)
+
+    rows = cur.fetchall()
+
+    cur.close()
+
+    data = []
+
+    for row in rows:
+        data.append({
+            "tanggal": str(row[0]),
+            "supplier": row[1],
+            "nominal": float(row[2]),
+            "keterangan": row[3]
+        })
+
+    return jsonify(data)
+
+
+@app.route("/simpan_pembayaran_supplier", methods=["POST"])
+def simpan_pembayaran_supplier():
+
+    data = request.get_json()
+
+    cur = conn.cursor()
+
+    # CEK DUPLIKAT
+    cur.execute("""
+        SELECT COUNT(*)
+        FROM pembayaran_supplier
+        WHERE tanggal=%s
+        AND supplier=%s
+        AND nominal=%s
+    """, (
+        data["tanggal"],
+        data["supplier"],
+        data["nominal"]
+    ))
+
+    cek = cur.fetchone()[0]
+
+    if cek > 0:
+        cur.close()
+
+        return jsonify({
+            "message":"Pembayaran supplier sudah pernah diinput"
+        })
+
+    # Simpan riwayat pembayaran
+    cur.execute("""
+        INSERT INTO pembayaran_supplier
+        (tanggal,supplier,nominal,keterangan)
+        VALUES (%s,%s,%s,%s)
+    """, (
+        data["tanggal"],
+        data["supplier"],
+        data["nominal"],
+        data["keterangan"]
+    ))
+
+    # Kurangi kas
+    cur.execute("""
+        INSERT INTO kas
+        (tanggal,keterangan,masuk,keluar)
+        VALUES (%s,%s,%s,%s)
+    """, (
+        data["tanggal"],
+        "PEMBAYARAN HUTANG SUPPLIER",
+        0,
+        data["nominal"]
+    ))
+
+    # Bayar hutang tertua terlebih dahulu
+    sisa_bayar = float(data["nominal"])
+
+    cur.execute("""
+        SELECT id,total,sudah_dibayar
+        FROM pembelian
+        WHERE status='HUTANG'
+        AND supplier=%s
+        AND total > sudah_dibayar
+        ORDER BY tanggal,id
+    """, (data["supplier"],))
+
+    hutang_list = cur.fetchall()
+
+    for hutang in hutang_list:
+
+        id_pembelian = hutang[0]
+        total = float(hutang[1])
+        sudah_dibayar = float(hutang[2])
+
+        sisa_hutang = total - sudah_dibayar
+
+        if sisa_bayar <= 0:
+            break
+
+        bayar = min(sisa_bayar, sisa_hutang)
+
+        cur.execute("""
+            UPDATE pembelian
+            SET sudah_dibayar = sudah_dibayar + %s
+            WHERE id=%s
+        """, (
+            bayar,
+            id_pembelian
+        ))
+
+        sisa_bayar -= bayar
+
+    conn.commit()
+    cur.close()
+
+    return jsonify({
+        "message":"Pembayaran supplier berhasil disimpan"
+    })
+    # =========================
+# OPERASIONAL
+# =========================
+
+@app.route("/operasional", methods=["GET"])
+def get_operasional():
+
+    cur = conn.cursor()
+
+    cur.execute("""
+        SELECT
+            id,
+            tanggal,
+            kategori,
+            keterangan,
+            jumlah
+        FROM operasional
+        ORDER BY id DESC
+    """)
+
+    rows = cur.fetchall()
+
+    cur.close()
+
+    data = []
+
+    for row in rows:
+        data.append({
+            "id": row[0],
+            "tanggal": str(row[1]),
+            "kategori": row[2],
+            "keterangan": row[3],
+            "jumlah": float(row[4])
+        })
+
+    return jsonify(data)
+
+
+@app.route("/simpan_operasional", methods=["POST"])
+def simpan_operasional():
+
+    data = request.get_json()
+
+    cur = conn.cursor()
+
+    cur.execute("""
+        INSERT INTO operasional
+        (tanggal,kategori,keterangan,jumlah)
+        VALUES (%s,%s,%s,%s)
+    """, (
+        data["tanggal"],
+        data["kategori"],
+        data["keterangan"],
+        data["jumlah"]
+    ))
+
+    # otomatis masuk pengeluaran kas
+    cur.execute("""
+        INSERT INTO kas
+        (tanggal,keterangan,masuk,keluar)
+        VALUES (%s,%s,%s,%s)
+    """, (
+        data["tanggal"],
+        "OPERASIONAL - " + data["kategori"],
+        0,
+        data["jumlah"]
+    ))
+
+    conn.commit()
+    cur.close()
+
+    return jsonify({
+        "message":"Operasional berhasil disimpan"
+    })
+@app.route("/pencarian", methods=["GET"])
+def pencarian():
+
+    keyword = request.args.get("keyword")
+
+    hasil = []
+
+    cur = conn.cursor()
+
+    # PEMBELIAN
+    cur.execute("""
+        SELECT tanggal,supplier,barang,total
+        FROM pembelian
+        WHERE barang ILIKE %s
+        OR supplier ILIKE %s
+    """, (
+        f"%{keyword}%",
+        f"%{keyword}%"
+    ))
+
+    for row in cur.fetchall():
+
+        hasil.append({
+            "sumber":"Pembelian",
+            "keterangan":
+            f"{row[0]} | {row[1]} | {row[2]} | Rp {row[3]}"
+        })
+
+    # INPUT HARIAN
+    cur.execute("""
+        SELECT tanggal,barang,terjual
+        FROM input_harian
+        WHERE barang ILIKE %s
+    """, (
+        f"%{keyword}%",
+    ))
+
+    for row in cur.fetchall():
+
+        hasil.append({
+            "sumber":"Input Harian",
+            "keterangan":
+            f"{row[0]} | {row[1]} | Terjual {row[2]}"
+        })
+
+    # PEMBAYARAN SUPPLIER
+    cur.execute("""
+        SELECT tanggal,supplier,nominal
+        FROM pembayaran_supplier
+        WHERE supplier ILIKE %s
+    """, (
+        f"%{keyword}%",
+    ))
+
+    for row in cur.fetchall():
+
+        hasil.append({
+            "sumber":"Pembayaran Supplier",
+            "keterangan":
+            f"{row[0]} | {row[1]} | Rp {row[2]}"
+        })
+
+    # OPERASIONAL
+    cur.execute("""
+        SELECT
+            tanggal,
+            kategori,
+            keterangan,
+            jumlah
+        FROM operasional
+        WHERE kategori ILIKE %s
+        OR keterangan ILIKE %s
+    """, (
+        f"%{keyword}%",
+        f"%{keyword}%"
+    ))
+
+    for row in cur.fetchall():
+
+        hasil.append({
+            "sumber":"Operasional",
+            "keterangan":
+            f"{row[0]} | {row[1]} | {row[2]} | Rp {row[3]}"
+        })
+
+    cur.close()
+
+    return jsonify(hasil)
+# =========================
+# DASHBOARD
+# =========================
+
+@app.route("/dashboard", methods=["GET"])
+def dashboard():
+    cur = conn.cursor()
+
+    # Omzet
+    cur.execute("""
+        SELECT COALESCE(SUM(omzet),0)
+        FROM input_harian
+    """)
+    omzet = cur.fetchone()[0]
+
+    # Laba
+    cur.execute("""
+        SELECT COALESCE(SUM(laba),0)
+        FROM input_harian
+    """)
+    laba = cur.fetchone()[0]
+
+    # Saldo Kas
+    cur.execute("""
+        SELECT
+            COALESCE(SUM(masuk),0)
+            -
+            COALESCE(SUM(keluar),0)
+        FROM kas
+    """)
+    saldo_kas = cur.fetchone()[0]
+
+    # Sisa Hutang Supplier
+    cur.execute("""
+        SELECT COALESCE(SUM(total - sudah_dibayar),0)
+        FROM pembelian
+        WHERE status='HUTANG'
+    """)
+    hutang = cur.fetchone()[0]
+
+    # Persediaan
+    cur.execute("""
+        SELECT COALESCE(SUM(stok * harga_beli),0)
+        FROM barang
+    """)
+    persediaan = cur.fetchone()[0]
+
+    # Stok Menipis
+    cur.execute("""
+        SELECT COUNT(*)
+        FROM barang
+        WHERE stok <= 5
+    """)
+    stok_menipis = cur.fetchone()[0]
+
+    # Aset
+    aset_kotor = saldo_kas + persediaan
+    aset_bersih = aset_kotor - hutang
+
+    cur.close()
+
+    return jsonify({
+        "omzet": float(omzet),
+        "laba": float(laba),
+        "saldo_kas": float(saldo_kas),
+        "hutang_supplier": float(hutang),
+        "persediaan": float(persediaan),
+        "aset_kotor": float(aset_kotor),
+        "aset_bersih": float(aset_bersih),
+        "stok_menipis": stok_menipis
+    })
+
+
+if __name__ == "__main__":
+    app.run(debug=True)

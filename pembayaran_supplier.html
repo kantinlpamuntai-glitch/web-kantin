@@ -1,0 +1,98 @@
+```html
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pembayaran Supplier - D'ELBAR</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+
+    <button onclick="location.href='index.html'" class="back-btn">
+        ← Dashboard
+    </button>
+
+    <h1>Pembayaran Supplier</h1>
+
+    <div class="form-box grid-form">
+
+        <div class="input-group">
+            <label>Tanggal</label>
+            <input type="date" id="tanggal">
+        </div>
+
+        <div class="input-group">
+            <label>Supplier</label>
+            <select id="supplier"></select>
+        </div>
+
+        <div class="input-group">
+            <label>Total Pembayaran</label>
+            <input
+                type="number"
+                id="nominal"
+                readonly>
+        </div>
+
+        <div class="input-group">
+            <label>Keterangan</label>
+            <input type="text" id="keterangan">
+        </div>
+
+        <button id="simpanBtn">
+            Simpan Pembayaran
+        </button>
+
+    </div>
+
+    <br>
+
+    <h3>Daftar Hutang Supplier</h3>
+
+    <table>
+
+        <thead>
+            <tr>
+                <th>Pilih</th>
+                <th>Barang</th>
+                <th>Sisa Hutang</th>
+            </tr>
+        </thead>
+
+        <tbody id="dataHutangSupplier">
+
+        </tbody>
+
+    </table>
+
+    <br>
+
+    <h3>Riwayat Pembayaran</h3>
+
+    <table>
+
+        <thead>
+            <tr>
+                <th>Tanggal</th>
+                <th>Supplier</th>
+                <th>Nominal</th>
+                <th>Keterangan</th>
+            </tr>
+        </thead>
+
+        <tbody id="dataPembayaran">
+
+        </tbody>
+
+    </table>
+
+</div>
+
+<script src="pembayaran_supplier.js"></script>
+
+</body>
+</html>
+```
